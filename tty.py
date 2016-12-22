@@ -33,10 +33,15 @@ class CustomSerial(threading.Thread):
                 content=self.s.readline().decode('utf-8')
                 jc = self._d.decrypt(a2b_hex(content[:320])).decode('utf-8')
                 jc = jc[:jc.find('}') + 1]
-                j = json.loads(jc)               
+                j = json.loads(jc)     
+                # print(j)          
                 power = j["LiVolt"] * j["TotalCurrent"]
-                hyPower = tools.fakeData(power)
+                # print(power)
+                # hyPower = tools.fakeData(power)
+                hyPower = j['HyVolt'] * j['DCInCurrent'] * 1.5
+                # print(hyPower)
                 self.pointData = {"HyTemp":j["HyTemp"],
+                                  #"HyPress":29.22,
                                   "HyPress":j["HyPress"],
                                   "LiVolt":j["LiVolt"],
                                   "HyVolt":j["HyVolt"],

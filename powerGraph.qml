@@ -135,8 +135,17 @@ ApplicationWindow{
             font.pixelSize: 12
         }
     }
+    property int graphYMax: 0
+    property int graphYMin: 0
+    property int max: 0
     function setChartData(hy, li, motor, x)
     {
+        //var max, min;
+        //console.log(graphYMax)
+        //console.log(graphYMin)
+        graphYMax = Math.max(Math.max.apply({}, motor),
+                             Math.max.apply({}, hy))
+        graphYMin = Math.min.apply({}, li)
         var ChartLineData = {
         labels: x,
         datasets: [{
@@ -162,8 +171,8 @@ ApplicationWindow{
         allChart.chartData = ChartLineData;
         allChart.chartOptions = {bezierCurve : true,
                                  scaleOverride:true,
-                                 scaleSteps:20,
+                                 scaleSteps: Math.ceil((graphYMax - graphYMin) / 150),
                                  scaleStepWidth : 150,
-                                 scaleStartValue:0};
+                                 scaleStartValue: Math.floor(graphYMin / 150) * 150};
     }
 }
